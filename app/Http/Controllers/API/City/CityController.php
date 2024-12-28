@@ -19,7 +19,7 @@ class CityController extends Controller
 
     public function getMostPopular(): AnonymousResourceCollection
     {
-        $cities = City::query()->get();
+        $cities = City::query()->take(4)->get();
         return CityResource::collection($cities);
     }
 

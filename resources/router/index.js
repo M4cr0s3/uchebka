@@ -1,7 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import {ROUTES} from "./routes.js";
 import {useAuthStore} from "../Stores/index.js";
-import {onMounted} from "vue";
 
 const routes = [
     {
@@ -49,7 +48,7 @@ const routes = [
         name: 'admin_cities',
         component: () => import('../Pages/City/Index.vue'),
         meta: {
-            isAuth: true
+            isAuth: true,
         },
 
     },
@@ -58,7 +57,7 @@ const routes = [
         name: 'city_create',
         component: () => import('../Pages/City/Create.vue'),
         meta: {
-            isAuth: true
+            isAuth: true,
         }
     },
     {
@@ -66,9 +65,17 @@ const routes = [
         name: 'city_edit',
         component: () => import('../Pages/City/Edit.vue'),
         meta: {
-            isAuth: true
+            isAuth: true,
         }
     },
+    {
+        path: '/admin/airports',
+        name: 'airports',
+        component: () => import('../Pages/Airport/Index.vue'),
+        meta: {
+            isAuth: true,
+        }
+    }
 ];
 
 export const router = createRouter({

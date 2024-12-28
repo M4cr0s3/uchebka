@@ -10,16 +10,16 @@ use Illuminate\Http\UploadedFile;
 
 class AirportController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return response()->json(Airport::query()->get());
     }
 
     public function store(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
             'title' => ['required', 'string'],
-            'city_id' => ['required', 'exists:city,id'],
+            'city_id' => ['required', 'exists:cities,id'],
         ]);
 
         Airport::query()
@@ -43,7 +43,7 @@ class AirportController extends Controller
     {
         $validatedData = $request->validate([
             'title' => ['string'],
-            'city_id' => ['exists:city,id']
+            'city_id' => ['exists:cities,id']
         ]);
 
         $airport->update($validatedData);

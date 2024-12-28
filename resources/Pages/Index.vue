@@ -55,7 +55,7 @@ watchEffect(() => {
 
 onMounted(async () => {
     // userLocation.value = (await GeoService.getUserLocation()).city;
-    cities.value = (await CityService.getPopularCities()).splice(0, 4);
+    cities.value = (await CityService.getPopularCities());
 })
 
 </script>

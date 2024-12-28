@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Airport;
 use App\Models\City;
 use App\Models\User;
 
@@ -28,5 +29,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         City::factory(10)->create();
+        Airport::factory(10)->create();
     }
 }
