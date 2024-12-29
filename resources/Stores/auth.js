@@ -5,6 +5,7 @@ import {api} from "../API";
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isAuth: false,
+        role: '',
     }),
     actions: {
         async login(credentials) {

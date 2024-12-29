@@ -59,6 +59,7 @@ final readonly class AuthController
     {
         return response()->json([
             'isAuth' => !!\auth()->user(),
+            'role' => auth()->user()->role,
         ]);
     }
 }

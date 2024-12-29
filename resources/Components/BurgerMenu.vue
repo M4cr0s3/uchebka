@@ -82,6 +82,39 @@ const logout = async () => {
                         </a>
                     </li>
                 </ul>
+                <ul class="list-none p-0 m-0 overflow-hidden"
+                    :class="{hidden: !authStore.isAuth || authStore.role === 'USER'}">
+                    <li>
+                        <RouterLink
+                            to="/admin/cities"
+                            v-ripple
+                            class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                        >
+                            <i :class="PrimeIcons.BUILDING" class="mr-2"/>
+                            <span class="font-medium">CRUD - города</span>
+                        </RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink
+                            to="/admin/airports"
+                            v-ripple
+                            class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                        >
+                            <i :class="PrimeIcons.SEND" class="mr-2"/>
+                            <span class="font-medium">CRUD - аэропорта</span>
+                        </RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink
+                            to="/admin/flights"
+                            v-ripple
+                            class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                        >
+                            <i :class="PrimeIcons.TICKET" class="mr-2"/>
+                            <span class="font-medium">CRUD - рейсы</span>
+                        </RouterLink>
+                    </li>
+                </ul>
             </template>
         </Drawer>
     </div>

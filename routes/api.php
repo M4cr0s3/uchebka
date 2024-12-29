@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\API\AirportController;
 use App\Http\Controllers\API\City\CityController;
+use App\Http\Controllers\API\Flight\FlightController;
 use App\Http\Controllers\API\GeoController;
+use App\Http\Controllers\API\PlaneController;
 use Illuminate\Support\Facades\Route;
 
 include __DIR__ . '/auth.php';
@@ -43,3 +45,31 @@ Route::group(['prefix' => 'airports'], function () {
 
 });
 
+
+Route::group(['prefix' => 'planes'], function () {
+
+    Route::group(['middleware' => 'auth:api'], function () {
+
+        Route::get('/', [PlaneController::class, 'index']);
+        Route::get('/{plane}', [PlaneController::class, 'show']);
+        Route::post('/', [PlaneController::class, 'store']);
+        Route::patch('/{plane}', [PlaneController::class, 'update']);
+        Route::delete('/{plane}', [PlaneController::class, 'destroy']);
+
+    });
+
+});
+
+Route::group(['prefix' => 'flights'], function () {
+
+    Route::group(['middleware' => 'auth:api'], function () {
+
+        Route::get('/', [FlightController::class, 'index']);
+        Route::get('/{flight}', [FlightController::class, 'show']);
+        Route::post('/', [FlightController::class, 'store']);
+        Route::patch('/{flight}', [FlightController::class, 'update']);
+        Route::delete('/{flight}', [FlightController::class, 'destroy']);
+
+    });
+
+});

@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class PlaneController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return response()->json(Plane::query()->get());
     }
 
     public function store(Request $request): JsonResponse

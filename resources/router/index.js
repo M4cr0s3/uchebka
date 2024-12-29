@@ -75,7 +75,23 @@ const routes = [
         meta: {
             isAuth: true,
         }
-    }
+    },
+    {
+        path: '/admin/planes',
+        name: 'planes',
+        component: () => import('../Pages/Plane/Index.vue'),
+        meta: {
+            isAuth: true,
+        }
+    },
+    {
+        path: '/admin/flights',
+        name: 'planes',
+        component: () => import('../Pages/Flight/Index.vue'),
+        meta: {
+            isAuth: true,
+        }
+    },
 ];
 
 export const router = createRouter({
@@ -90,6 +106,7 @@ router.beforeEach(async (to, from, next) => {
         const response = await authStore.getIsAuth();
         if (response.data.isAuth) {
             authStore.isAuth = true;
+            authStore.role = response.data.role
         }
     } catch (e) {
         console.log(e)

@@ -17,7 +17,8 @@ class PlaneFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'model' => fake()->company() . ' plane',
+            'capacity' => fake()->numberBetween(1, 100)
         ];
     }
 }

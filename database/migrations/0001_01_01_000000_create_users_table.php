@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('fio');
             $table->date('birthday');
+            $table->enum('role', ['USER', 'ADMIN'])->default('USER');
             $table->string('passport')->unique();
             $table->string('login')->unique();
             $table->string('phone')->unique();
