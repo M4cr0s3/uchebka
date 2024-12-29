@@ -1,8 +1,19 @@
 <script setup>
 import {DefaultLayout} from "../../Layouts";
 import {Heading} from "../../Components";
-import {onMounted, ref} from "vue";
-import {DataTable, Column, Tag, Select, Button, DatePicker, usePrimeVue, InputNumber} from 'primevue'
+import {computed, onMounted, reactive, ref} from "vue";
+import {
+    DataTable,
+    Column,
+    Tag,
+    Select,
+    Button,
+    DatePicker,
+    usePrimeVue,
+    InputNumber,
+    FloatLabel,
+    Dialog,
+} from 'primevue'
 import {api} from "../../API";
 import {PrimeIcons} from "@primevue/core/api";
 import dayjs from "dayjs";
@@ -11,19 +22,24 @@ const flights = ref([]);
 const editingRows = ref([]);
 const airports = ref([]);
 const planes = ref([])
-
-onMounted(async () => {
-    const primeVue = usePrimeVue();
-    primeVue.config.locale.dayNamesMin = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-    primeVue.config.locale.monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-    flights.value = (await api('/flights')).data;
-    airports.value = (await api('/airports')).data;
-    planes.value = (await api('/planes')).data;
+const visible = ref(false);
+const data = reactive({
+    departure_airport_id: 0,
+    arrival_airport_id: 0,
+    departure_time: '',
+    arrival_time: '',
+    status: '',
+    plane_id: 0,
+    additional_price: 0,
 });
 
-const formatCurrency = (value) => {
-    return new Intl.NumberFormat('ru-RU', {style: 'currency', currency: 'RUB'}).format(value);
-};
+const flightsWithDate = computed(() => {
+    return flights.value.map(flight => ({
+        ...flight,
+        arrival_time: new Date(flight.arrival_time),
+        departure_time: new Date(flight.departure_time),
+    }))
+})
 
 const onRowEditSave = async (event) => {
     await api.patch(`/flights/${event.data.id}`, {
@@ -37,6 +53,24 @@ const onRowEditSave = async (event) => {
 const onRowDelete = async (data) => {
     await api.delete(`/flights/${data.id}`);
     flights.value = (await api('/flights')).data;
+}
+
+const onSubmit = async () => {
+    const response = await api.post('/flights', {
+        ...data,
+        arrival_time: dayjs(data.arrival_time).format('YYYY-MM-DD HH:mm:ss'),
+        departure_time: dayjs(data.departure_time).format('YYYY-MM-DD HH:mm:ss')
+    })
+    if (response.data.success) {
+        flights.value = (await api('/flights')).data;
+        data.plane_id = 0;
+        data.departure_time = '';
+        data.arrival_airport_id = 0;
+        data.status = '';
+        data.departure_airport_id = 0;
+        data.arrival_time = '';
+        visible.value = false;
+    }
 }
 
 const getSeverity = (status) => {
@@ -58,14 +92,33 @@ const getSeverity = (status) => {
     }
 };
 
+const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ru-RU', {style: 'currency', currency: 'RUB'}).format(value);
+};
+
+onMounted(async () => {
+    const primeVue = usePrimeVue();
+    primeVue.config.locale.dayNamesMin = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    primeVue.config.locale.monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+    flights.value = (await api('/flights')).data;
+    airports.value = (await api('/airports')).data;
+    planes.value = (await api('/planes')).data;
+});
+
 </script>
 
 <template>
     <DefaultLayout>
         <div class="container mx-auto">
             <Heading title="Список рейсов" class="mt-8 mb-6"/>
+            <Button
+                @click="visible = true"
+                class="!mt-2 !mb-6 w-full !bg-primary !font-medium !py-1.5 !rounded-lg !text-center !border-0"
+            >
+                Добавить
+            </Button>
             <div class="card">
-                <DataTable v-model:editingRows="editingRows" :value="flights" editMode="row" dataKey="id"
+                <DataTable v-model:editingRows="editingRows" :value="flightsWithDate" editMode="row" dataKey="id"
                            @row-edit-save="onRowEditSave"
                            paginator
                            :rows="10"
@@ -81,7 +134,7 @@ const getSeverity = (status) => {
                     <Column field="departure_airport_id" header="Аэропорт вылета" style="width: 15%">
                         <template #editor="{ data, field }">
                             <Select v-model="data[field]" :options="airports" option-label="title" option-value="id"
-                                    placeholder="Выберите id аэропорта" fluid>
+                                    placeholder="Выберите аэропорт" fluid>
                                 <template #option="slotProps">
                                     <Tag :value="slotProps.option.id">
                                         <div class="flex items-center gap-2 px-1">
@@ -131,23 +184,23 @@ const getSeverity = (status) => {
                     </Column>
                     <Column field="departure_time" header="Время отбытия" style="width: 15%">
                         <template #editor="{ data, field }">
-                            <DatePicker v-model="data[field]" date-format="yy-m-d" showTime/>
+                            <DatePicker v-model="data[field]" class="min-w-52" showTime/>
                         </template>
                         <template #body="slotProps">
                             <div class="flex items-center gap-2 text-zinc-600 font-medium">
                                 <i :class="PrimeIcons.CLOCK"/>
-                                <span>{{ slotProps.data.departure_time }}</span>
+                                <span>{{ dayjs(slotProps.data.departure_time).format("YYYY-MM-DD HH:mm:ss") }}</span>
                             </div>
                         </template>
                     </Column>
                     <Column field="arrival_time" header="Время прибытия" style="width: 15%">
                         <template #editor="{ data, field }">
-                            <DatePicker v-model="data[field]" date-format="yy-m-d" showTime/>
+                            <DatePicker v-model="data[field]" class="min-w-52" showTime/>
                         </template>
                         <template #body="slotProps">
                             <div class="flex items-center gap-2 text-zinc-600 font-medium">
                                 <i :class="PrimeIcons.CLOCK"/>
-                                <span>{{ slotProps.data.arrival_time }}</span>
+                                <span>{{ dayjs(slotProps.data.arrival_time).format("YYYY-MM-DD HH:mm:ss") }}</span>
                             </div>
                         </template>
                     </Column>
@@ -183,6 +236,85 @@ const getSeverity = (status) => {
                     </Column>
                 </DataTable>
             </div>
+            <Dialog v-model:visible="visible" @submit.prevent="onSubmit" modal header="Создание рейса"
+                    :style="{ width: '50rem' }">
+                <form class="flex flex-col justify-center space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <FloatLabel variant="in">
+                            <Select id="departure" v-model="data.departure_airport_id" :options="airports"
+                                    option-label="title"
+                                    option-value="id"
+                                    placeholder="Выберите аэропорт отправления" fluid>
+                                <template #option="slotProps">
+                                    <Tag :value="slotProps.option.id">
+                                        <div class="flex items-center gap-2 px-1">
+                                            <span class="text-base">{{ slotProps.option.title }}</span>
+                                        </div>
+                                    </Tag>
+                                </template>
+                            </Select>
+                            <label for="departure">Аэропорт отправления</label>
+                        </FloatLabel>
+                        <FloatLabel variant="in">
+                            <Select id="departure" v-model="data.arrival_airport_id" :options="airports"
+                                    option-label="title"
+                                    option-value="id"
+                                    placeholder="Выберите аэропорт прибытия" fluid>
+                                <template #option="slotProps">
+                                    <Tag :value="slotProps.option.id">
+                                        <div class="flex items-center gap-2 px-1">
+                                            <span class="text-base">{{ slotProps.option.title }}</span>
+                                        </div>
+                                    </Tag>
+                                </template>
+                            </Select>
+                            <label for="departure">Аэропорт прибытия</label>
+                        </FloatLabel>
+                        <FloatLabel variant="in">
+                            <DatePicker id="departure_time" v-model="data.departure_time" fluid showTime/>
+                            <label for="departure_time">Время отправления</label>
+                        </FloatLabel>
+                        <FloatLabel variant="in">
+                            <DatePicker id="arrival_time" v-model="data.arrival_time" fluid showTime/>
+                            <label for="arrival_time">Время прибытия</label>
+                        </FloatLabel>
+                        <FloatLabel variant="in">
+                            <Select v-model="data.status" :options="['Готов', 'В полете', 'Прибыл', 'ТО']" fluid>
+                                <template #option="slotProps">
+                                    <Tag :value="slotProps.option" :severity="getSeverity(slotProps.option)"/>
+                                </template>
+                            </Select>
+                            <label for="status">Статус</label>
+                        </FloatLabel>
+                        <FloatLabel variant="in">
+                            <InputNumber id="price" mode="currency" currency="RUB" locale="ru-RU"
+                                         v-model="data.additional_price" class="w-full"/>
+                            <label for="price">Доп. цена</label>
+                        </FloatLabel>
+                    </div>
+                    <FloatLabel variant="in">
+                        <Select id="plane" v-model="data.plane_id" :options="planes"
+                                option-label="model"
+                                option-value="id"
+                                placeholder="Выберите самолет" fluid>
+                            <template #option="slotProps">
+                                <Tag :value="slotProps.option.id">
+                                    <div class="flex items-center gap-2 px-1">
+                                        <span class="text-base">{{ slotProps.option.model }}</span>
+                                    </div>
+                                </Tag>
+                            </template>
+                        </Select>
+                        <label for="plane">Самолет</label>
+                    </FloatLabel>
+                    <Button
+                        type="submit"
+                        class="w-full !bg-primary !font-medium !py-1.5 !rounded-lg !text-center !border-0"
+                    >
+                        Добавить
+                    </Button>
+                </form>
+            </Dialog>
         </div>
     </DefaultLayout>
 </template>

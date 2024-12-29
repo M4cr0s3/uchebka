@@ -14,7 +14,7 @@ final readonly class GeoController
         $dadataClient = new DadataClient(config('services.dadata.api_key'));
         try {
             return response()->json([
-                'city' => $dadataClient->getLocation($request->ip())
+                'city' => $dadataClient->getLocation($request->ip()),
             ]);
         } catch (ConnectionException $e) {
             return response()->json([

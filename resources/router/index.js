@@ -86,12 +86,20 @@ const routes = [
     },
     {
         path: '/admin/flights',
-        name: 'planes',
+        name: 'flights',
         component: () => import('../Pages/Flight/Index.vue'),
         meta: {
             isAuth: true,
         }
     },
+    {
+        path: '/admin/users',
+        name: 'users',
+        component: () => import('../Pages/Users/Index.vue'),
+        meta: {
+            isAuth: true,
+        }
+    }
 ];
 
 export const router = createRouter({
@@ -109,7 +117,6 @@ router.beforeEach(async (to, from, next) => {
             authStore.role = response.data.role
         }
     } catch (e) {
-        console.log(e)
     }
 
     if ((to.path === ROUTES.LOGIN || to.path === ROUTES.REGISTER) && authStore.isAuth) {

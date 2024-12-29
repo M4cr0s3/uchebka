@@ -18,7 +18,7 @@ class Flight extends Model
         'arrival_time',
         'status',
         'plane_id',
-        'additional_price'
+        'additional_price',
     ];
 
     public function departureAirport(): BelongsTo

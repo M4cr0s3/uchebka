@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Airport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 
 class AirportController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(Airport::query()->get());
+        return response()->json(Airport::query()->with('city')->get());
     }
 
     public function store(Request $request): JsonResponse
@@ -27,7 +26,7 @@ class AirportController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Аэропорт успешно добавлен.'
+            'message' => 'Аэропорт успешно добавлен.',
         ]);
     }
 
@@ -43,7 +42,7 @@ class AirportController extends Controller
     {
         $validatedData = $request->validate([
             'title' => ['string'],
-            'city_id' => ['exists:cities,id']
+            'city_id' => ['exists:cities,id'],
         ]);
 
         $airport->update($validatedData);

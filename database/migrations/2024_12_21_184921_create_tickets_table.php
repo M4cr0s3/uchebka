@@ -31,7 +31,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
             $table->float('price');
             $table->enum('status', array_map(
-                fn(TicketStatusEnum $enum) => $enum->value,
+                fn (TicketStatusEnum $enum) => $enum->value,
                 TicketStatusEnum::cases())
             )
                 ->default(TicketStatusEnum::DECORATED);

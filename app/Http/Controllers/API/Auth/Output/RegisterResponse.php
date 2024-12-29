@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Auth\Output;
 
-
 use Illuminate\Http\JsonResponse;
 
 final class RegisterResponse extends JsonResponse
@@ -13,11 +12,9 @@ final class RegisterResponse extends JsonResponse
     }
 
     /**
-     * @param array|object $data
-     * @param positive-int $status
-     * @return JsonResponse
+     * @param  array|object  $data
+     * @param  positive-int  $status
      */
-
     public static function make(mixed $data, int $status = 200): JsonResponse
     {
         return new self($data, $status);

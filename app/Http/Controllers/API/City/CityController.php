@@ -20,9 +20,9 @@ class CityController extends Controller
     public function getMostPopular(): AnonymousResourceCollection
     {
         $cities = City::query()->take(4)->get();
+
         return CityResource::collection($cities);
     }
-
 
     public function store(Request $request): JsonResponse
     {
@@ -30,10 +30,10 @@ class CityController extends Controller
 
         $validatedData = $request->validate([
             'title' => ['required', 'string'],
-            'image' => ['required', 'image']
+            'image' => ['required', 'image'],
         ]);
 
-        $city = new City();
+        $city = new City;
 
         if ($file) {
             $imagePath = \Storage::disk('public_uploads')->put('/images', $file);
@@ -45,7 +45,7 @@ class CityController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Город успешно добавлен.'
+            'message' => 'Город успешно добавлен.',
         ]);
     }
 

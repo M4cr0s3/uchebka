@@ -37,5 +37,5 @@ return [
 
     'dadata' => [
         'api_key' => env('DADATA_API_KEY'),
-    ]
+    ],
 ];

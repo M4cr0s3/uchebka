@@ -7,7 +7,7 @@ use App\Http\Controllers\API\GeoController;
 use App\Http\Controllers\API\PlaneController;
 use Illuminate\Support\Facades\Route;
 
-include __DIR__ . '/auth.php';
+include __DIR__.'/auth.php';
 
 Route::group(['prefix' => 'geo'], function () {
 
@@ -44,7 +44,6 @@ Route::group(['prefix' => 'airports'], function () {
     });
 
 });
-
 
 Route::group(['prefix' => 'planes'], function () {
 

@@ -14,6 +14,7 @@ class FlightController extends Controller
     public function index(): JsonResponse
     {
         $flights = Flight::with('departureAirport', 'arrivalAirport', 'plane')->get();
+
         return response()->json($flights);
     }
 
@@ -22,9 +23,9 @@ class FlightController extends Controller
         $validatedData = $request->validate([
             'departure_airport_id' => ['required', 'exists:airports,id'],
             'arrival_airport_id' => ['required', 'exists:airports,id'],
-            'departure_time' => ['required', 'before:' . Carbon::now()->format('Y-m-d H:i:s')],
+            'departure_time' => ['required', 'before:'.Carbon::now()->format('Y-m-d H:i:s')],
             'arrival_time' => ['required', 'after:departure_time'],
-            'additional_price' => ['required', 'decimal:2'],
+            'additional_price' => ['required', 'decimal:0'],
             'plane_id' => ['required', 'exists:planes,id'],
             'status' => [Rule::in(['Готов', 'Прибыл', 'В полете', 'ТО'])],
         ]);
@@ -33,7 +34,7 @@ class FlightController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Рейс успешно создан.'
+            'message' => 'Рейс успешно создан.',
         ]);
     }
 
@@ -47,7 +48,7 @@ class FlightController extends Controller
         $validatedData = $request->validate([
             'departure_airport_id' => ['nullable', 'exists:airports,id', 'different:arrival_airport_id'],
             'arrival_airport_id' => ['nullable', 'exists:airports,id', 'different:departure_airport_id'],
-            'departure_time' => ['date', 'before:' . Carbon::now()->format('Y-m-d H:i:s')],
+            'departure_time' => ['date', 'before:'.Carbon::now()->format('Y-m-d H:i:s')],
             'arrival_time' => ['date', 'after:departure_time'],
             'additional_price' => ['decimal:0'],
             'plane_id' => ['exists:planes,id'],
@@ -58,7 +59,7 @@ class FlightController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Рейс успешно обновлен.'
+            'message' => 'Рейс успешно обновлен.',
         ]);
     }
 
@@ -68,7 +69,7 @@ class FlightController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Рейс успешно удален.'
+            'message' => 'Рейс успешно удален.',
         ]);
     }
 }

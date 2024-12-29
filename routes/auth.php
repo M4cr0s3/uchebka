@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\API\Auth\AuthController;
 
 Route::group(['prefix' => 'auth'], function () {

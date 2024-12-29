@@ -32,7 +32,6 @@ const toggleDrawer = () => {
 
 const logout = async () => {
     const response = await authStore.logout();
-    console.log(response)
     if (!response.data.success) {
         return;
     }
@@ -106,12 +105,32 @@ const logout = async () => {
                     </li>
                     <li>
                         <RouterLink
+                            to="/admin/planes"
+                            v-ripple
+                            class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                        >
+                            <i :class="PrimeIcons.SEND" class="mr-2"/>
+                            <span class="font-medium">CRUD - самолеты</span>
+                        </RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink
                             to="/admin/flights"
                             v-ripple
                             class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
                         >
                             <i :class="PrimeIcons.TICKET" class="mr-2"/>
                             <span class="font-medium">CRUD - рейсы</span>
+                        </RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink
+                            to="/admin/users"
+                            v-ripple
+                            class="flex items-center cursor-pointer p-3 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                        >
+                            <i :class="PrimeIcons.USERS" class="mr-2"/>
+                            <span class="font-medium">RUD - пользователи</span>
                         </RouterLink>
                     </li>
                 </ul>

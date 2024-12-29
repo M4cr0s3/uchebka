@@ -18,7 +18,7 @@ class PlaneController extends Controller
     {
         $validatedData = $request->validate([
             'model' => ['required', 'string'],
-            'capacity' => ['required', 'integer']
+            'capacity' => ['required', 'integer'],
         ]);
 
         $plane = Plane::query()
@@ -27,7 +27,7 @@ class PlaneController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Самолет создан',
-            'plane' => $plane
+            'plane' => $plane,
         ]);
     }
 
@@ -35,7 +35,7 @@ class PlaneController extends Controller
     {
         return response()->json([
             'success' => true,
-            'plane' => $plane
+            'plane' => $plane,
         ]);
     }
 
@@ -43,14 +43,14 @@ class PlaneController extends Controller
     {
         $validatedData = $request->validate([
             'model' => ['string'],
-            'capacity' => ['integer']
+            'capacity' => ['integer'],
         ]);
 
         $plane->update($validatedData);
 
         return response()->json([
             'success' => true,
-            'message' => 'Самолет обновлен.'
+            'message' => 'Самолет обновлен.',
         ]);
     }
 

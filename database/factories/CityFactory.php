@@ -14,12 +14,11 @@ class CityFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public function definition(): array
     {
         return [
             'title' => fake()->city(),
-            'img' => $this->getRandomImage()
+            'img' => $this->getRandomImage(),
         ];
     }
 
@@ -27,7 +26,10 @@ class CityFactory extends Factory
     {
         $allFilesInImagesDirectory = array_map(
             callback: static function (string $file) {
-                if (!pathinfo($file, PATHINFO_EXTENSION)) return null;
+                if (! pathinfo($file, PATHINFO_EXTENSION)) {
+                    return null;
+                }
+
                 return sprintf('%s/%s', 'images', $file);
             },
             array: scandir(public_path('images'))

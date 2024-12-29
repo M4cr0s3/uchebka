@@ -25,7 +25,7 @@ class FlightFactory extends Factory
             'arrival_time' => fake()->dateTimeBetween('-20 days'),
             'status' => fake()->randomElement(['Готов', 'В полете', 'Прибыл', 'ТО']),
             'plane_id' => Plane::query()->inRandomOrder()->first()->id,
-            'additional_price' => mt_rand(10000, 50000)
+            'additional_price' => mt_rand(10000, 50000),
         ];
     }
 }

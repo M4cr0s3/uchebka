@@ -28,7 +28,7 @@ final readonly class AuthController
 
     public function login(LoginRequest $request): JsonResponse
     {
-        if (!$token = auth('api')->attempt($request->validated())) {
+        if (! $token = auth('api')->attempt($request->validated())) {
             return LoginResponse::make([
                 'success' => false,
                 'message' => 'Неверный логин или пароль.',
@@ -58,7 +58,7 @@ final readonly class AuthController
     public function me(): JsonResponse
     {
         return response()->json([
-            'isAuth' => !!\auth()->user(),
+            'isAuth' => (bool) \auth()->user(),
             'role' => auth()->user()->role,
         ]);
     }

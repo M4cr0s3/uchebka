@@ -18,8 +18,8 @@ class AirportFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->city() . ' airport',
-            'city_id' => City::query()->inRandomOrder()->first()->id
+            'title' => fake()->city().' airport',
+            'city_id' => City::query()->inRandomOrder()->first()->id,
         ];
     }
 }

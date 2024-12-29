@@ -25,6 +25,7 @@ onMounted(fetchCities);
     <DefaultLayout>
         <div class="container mx-auto">
             <Heading title="Список городов" class="mt-8 mb-4"/>
+            <RouterLink to="/admin/cities/create" class="mt-8 block bg-primary font-medium py-2 px-4 rounded-lg text-white text-center">Добавить</RouterLink>
             <div class="grid grid-cols-4 gap-4">
                 <div v-for="city in cities" :key="city.id"
                      class="flex flex-col items-center p-4 border rounded-lg border-zinc-200 mt-8">

@@ -17,7 +17,7 @@ class CityResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'img' => $this->img
+            'img' => $this->img,
         ];
     }
 }
