@@ -54,7 +54,7 @@ const routes = [
     },
     {
         path: '/admin/cities/create',
-        name: 'city_create',
+        name: 'admin_city_create',
         component: () => import('../Pages/City/Create.vue'),
         meta: {
             isAuth: true,
@@ -62,7 +62,7 @@ const routes = [
     },
     {
         path: '/admin/cities/:id/edit',
-        name: 'city_edit',
+        name: 'admin_city_edit',
         component: () => import('../Pages/City/Edit.vue'),
         meta: {
             isAuth: true,
@@ -70,7 +70,7 @@ const routes = [
     },
     {
         path: '/admin/airports',
-        name: 'airports',
+        name: 'admin_airports',
         component: () => import('../Pages/Airport/Index.vue'),
         meta: {
             isAuth: true,
@@ -78,7 +78,7 @@ const routes = [
     },
     {
         path: '/admin/planes',
-        name: 'planes',
+        name: 'admin_planes',
         component: () => import('../Pages/Plane/Index.vue'),
         meta: {
             isAuth: true,
@@ -86,7 +86,7 @@ const routes = [
     },
     {
         path: '/admin/flights',
-        name: 'flights',
+        name: 'admin_flights',
         component: () => import('../Pages/Flight/Index.vue'),
         meta: {
             isAuth: true,
@@ -94,7 +94,7 @@ const routes = [
     },
     {
         path: '/admin/users',
-        name: 'users',
+        name: 'admin_users',
         component: () => import('../Pages/Users/Index.vue'),
         meta: {
             isAuth: true,

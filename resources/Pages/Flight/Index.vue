@@ -100,6 +100,7 @@ onMounted(async () => {
     const primeVue = usePrimeVue();
     primeVue.config.locale.dayNamesMin = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     primeVue.config.locale.monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+    primeVue.config.locale.monthNamesShort = ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек']
     flights.value = (await api('/flights')).data;
     airports.value = (await api('/airports')).data;
     planes.value = (await api('/planes')).data;

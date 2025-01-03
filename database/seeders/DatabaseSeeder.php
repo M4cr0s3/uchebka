@@ -20,15 +20,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        //        User::create([
-        //            'fio' => fake()->name(),
-        //            'birthday' => fake()->date(),
-        //            'passport' => mt_rand(2200000000, 9999999999),
-        //            'login' => fake()->userName(),
-        //            'phone' => fake()->phoneNumber(),
-        //            'email' => fake()->email(),
-        //            'password' => Hash::make('airlines'),
-        //        ]);
+        for ($i = 0; $i < 25; $i++) {
+            User::create([
+                'fio' => fake()->name(),
+                'birthday' => fake()->date(),
+                'passport' => mt_rand(2200000000, 9999999999),
+                'login' => fake()->userName(),
+                'phone' => fake()->phoneNumber(),
+                'email' => fake()->email(),
+                'password' => Hash::make('airlines'),
+            ]);
+        }
 
         //        City::factory(30)->create();
         //        Airport::factory(20)->create();
@@ -45,6 +47,6 @@ class DatabaseSeeder extends Seeder
         //                ]);
         //            }
         //        });
-        Flight::factory(20)->create();
+//        Flight::factory(20)->create();
     }
 }

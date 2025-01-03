@@ -22,7 +22,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'email:rfc,dns', 'unique:users'],
             'password' => ['required', 'min:6'],
             'password_repeat' => ['required', 'same:password'],
-            'rules' => ['required', 'in:on'],
+            'rules' => ['required', 'accepted'],
         ];
     }
 }

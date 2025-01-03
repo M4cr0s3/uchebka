@@ -8,6 +8,9 @@ export const useAuthStore = defineStore('auth', {
         role: '',
     }),
     actions: {
+        async register(credentials) {
+            return await api.post('/auth/register', credentials);
+        },
         async login(credentials) {
             return AuthService.login(credentials)
         },
@@ -16,6 +19,6 @@ export const useAuthStore = defineStore('auth', {
         },
         async logout() {
             return await api('/auth/logout');
-        }
+        },
     }
 })

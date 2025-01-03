@@ -7,6 +7,7 @@ import Aura from '@primevue/themes/aura'
 import Ripple from 'primevue/ripple';
 import 'primeicons/primeicons.css'
 import {createPinia} from "pinia";
+import ToastService from 'primevue/toastservice';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -22,6 +23,7 @@ app.use(PrimeVue, {
     },
     ripple: true
 });
+app.use(ToastService)
 
 app.directive('ripple', Ripple)
 

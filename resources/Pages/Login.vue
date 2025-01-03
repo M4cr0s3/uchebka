@@ -1,24 +1,37 @@
 <script setup>
 import {DefaultLayout} from "../Layouts";
 import {Heading} from "../Components";
-import {InputText, FloatLabel, Button} from "primevue";
+import {InputText, FloatLabel, Button, useToast, Toast} from "primevue";
 import {ref} from "vue";
 import {useAuthStore} from "../Stores";
-import {router} from "../router";
 import {ROUTES} from "../router/routes.js";
+import {useRouter} from "vue-router";
 
 const authStore = useAuthStore()
 const data = ref({
     login: '',
     password: '',
 })
+const router = useRouter();
+const toast = useToast();
 
 const onSubmit = async () => {
-    const response = await authStore.login(data.value)
-    if (response.data.success) {
-        authStore.isAuth = true
-        await router.push(ROUTES.HOME)
+    try {
+        const response = await authStore.login(data.value)
+        if (response.data.success) {
+            authStore.isAuth = true
+            await router.push(ROUTES.HOME)
+        }
+    } catch (e) {
+        toast.add({
+            severity: 'error',
+            summary: 'Ошибка!',
+            detail: e.response.data.message,
+            life: 3000,
+            closable: true,
+        })
     }
+
 }
 
 
@@ -26,6 +39,7 @@ const onSubmit = async () => {
 
 <template>
     <DefaultLayout>
+        <Toast/>
         <div class="h-[calc(100vh-72px)]">
             <div class="container max-w-2xl mx-auto flex flex-col justify-center h-full">
                 <Heading class="w-full" title="Авторизация"/>
